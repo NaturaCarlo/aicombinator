@@ -4,7 +4,7 @@ export default function SignUpPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F5F5EE]">
       <SignUp
-        afterSignUpUrl="/apply"
+        afterSignUpUrl="/launch"
         appearance={{
           elements: {
             rootBox: "w-full max-w-md",
