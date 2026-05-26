@@ -1,0 +1,75 @@
+# AI Combinator — Production Compose
+#
+# Runs the supervisor alongside the Cloudflare Tunnel.
+#
+# Usage:
+#   cd /srv/aicombinator
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Prerequisites:
+#   - Agent image built: docker build -t aic-agent:latest supervisor/container
+#   - Supervisor image built: docker build -f deploy/Dockerfile.supervisor -t aic-supervisor:latest supervisor
+#   - .env file at /srv/aicombinator/supervisor/.env
+#   - Cloudflare Tunnel configured (see deploy/cloudflared-config.yml)
+
+services:
+  supervisor:
+    image: aic-supervisor:latest
+    container_name: aic-supervisor
+    restart: unless-stopped
+    env_file:
+      - /srv/aicombinator/supervisor/.env
+    ports:
+      - "127.0.0.1:8787:8787"  # Only localhost — Tunnel handles external access
+    volumes:
+      # Docker socket — supervisor creates/manages agent containers on host
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Company workspace volumes
+      - /srv/aicombinator/companies:/srv/aicombinator/companies
+      # MCP server sockets
+      - /srv/aicombinator/mcp-servers:/srv/aicombinator/mcp-servers
+      # Supervisor logs
+      - /srv/aicombinator/logs:/app/logs
+    networks:
+      - aicombinator
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8787/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 4G
+        reservations:
+          cpus: "1.0"
+          memory: 1G
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: aic-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    networks:
+      - aicombinator
+    depends_on:
+      supervisor:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  aicombinator:
+    external: true

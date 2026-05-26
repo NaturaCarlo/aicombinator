@@ -1,0 +1,67 @@
+name = "agentmarket-api"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+# Add your production route after configuring a Cloudflare zone, for example:
+# routes = [
+#   { pattern = "api.example.com/*", zone_name = "example.com" }
+# ]
+
+# Durable Objects removed — agent execution moving to VM supervisor
+# Migration v2 deletes the AgentDO class (v1 created it)
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AgentDO"]
+
+[[migrations]]
+tag = "v2"
+deleted_classes = ["AgentDO"]
+
+[[kv_namespaces]]
+binding = "AUTOMATON_KV"
+id = "replace_with_kv_namespace_id"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "agentmarket"
+database_id = "replace_with_d1_database_id"
+
+[limits]
+cpu_ms = 300_000
+
+[vars]
+ENVIRONMENT = "production"
+ADMIN_USER_IDS = ""
+FRONTEND_URL = "https://example.com"
+WORKER_API_URL = "https://api.example.com"
+BASE_RPC_URL = "https://mainnet.base.org"
+CLOUDFLARE_ACCOUNT_ID = "replace_with_cloudflare_account_id"
+CLOUDFLARE_DASHBOARD_SCRIPT_NAME = "aicombinator"
+SHARED_SUPERVISOR_URL = "http://127.0.0.1:8787"
+
+[env.dev.vars]
+ENVIRONMENT = "development"
+ADMIN_USER_IDS = ""
+FRONTEND_URL = "http://localhost:3000"
+WORKER_API_URL = "http://127.0.0.1:8787"
+BASE_RPC_URL = "https://mainnet.base.org"
+CLOUDFLARE_ACCOUNT_ID = "replace_with_cloudflare_account_id"
+CLOUDFLARE_DASHBOARD_SCRIPT_NAME = "aicombinator"
+SHARED_SUPERVISOR_URL = "http://127.0.0.1:8787"
+
+# Secrets (set via wrangler secret put):
+# CLERK_SECRET_KEY
+# CLERK_WEBHOOK_SECRET
+# OPENROUTER_API_KEY
+# AGENTMAIL_API_KEY
+# BROWSERBASE_API_KEY
+# BROWSERBASE_PROJECT_ID
+# BROWSERBASE_FUNCTION_ID
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# SUPERVISOR_API_KEY
+# SUPERVISOR_URL
+# GEMINI_API_KEY
+# PORKBUN_API_KEY
+# PORKBUN_SECRET_API_KEY
+# CLOUDFLARE_API_TOKEN

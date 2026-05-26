@@ -1,0 +1,51 @@
+# AI Combinator Supervisor — systemd service
+#
+# Runs the supervisor as a native Node.js process (alternative to Docker).
+# Use this if you prefer running the supervisor directly on the VM instead
+# of inside a container.
+#
+# Install:
+#   cp deploy/aicombinator-supervisor.service /etc/systemd/system/
+#   systemctl daemon-reload
+#   systemctl enable --now aicombinator-supervisor
+#
+# Logs:
+#   journalctl -u aicombinator-supervisor -f
+
+[Unit]
+Description=AI Combinator Supervisor
+Documentation=https://github.com/aicombinator/automaton
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=aicombinator
+Group=aicombinator
+WorkingDirectory=/srv/aicombinator/supervisor
+EnvironmentFile=/srv/aicombinator/supervisor/.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=5
+
+# Graceful shutdown — supervisor catches SIGTERM
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/srv/aicombinator
+PrivateTmp=true
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=2G
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=aic-supervisor
+
+[Install]
+WantedBy=multi-user.target

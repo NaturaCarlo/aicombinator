@@ -1,0 +1,22 @@
+{
+  "name": "agentmarket-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "db:migrate": "wrangler d1 execute agentmarket --file=schema.sql",
+    "db:migrate:multi-agent": "wrangler d1 execute agentmarket --file=migrations/001_multi_agent.sql"
+  },
+  "dependencies": {
+    "hono": "^4.12.9",
+    "siwe": "^2.3.0",
+    "viem": "^2.44.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241205.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^3.99.0"
+  }
+}

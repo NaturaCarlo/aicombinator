@@ -1,0 +1,26 @@
+{
+  "name": "@automaton/supervisor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agent-relay/sdk": "^0.1.0",
+    "@anthropic-ai/claude-code": "^1.0.0",
+    "@hono/node-server": "^1.13.0",
+    "better-sqlite3": "^12.6.2",
+    "cron-parser": "^4.9.0",
+    "hono": "^4.7.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

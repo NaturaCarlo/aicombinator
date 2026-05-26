@@ -1,0 +1,159 @@
+{
+  "feature": "m5-e2e-navigation-design",
+  "testDate": "2026-03-29",
+  "deployedSite": "https://aicombinator.live",
+  "authState": "Clerk session JWT expired in saved auth-state.json — portfolio/billing/launch accessible, company pages show 'Not authenticated' fallback",
+  "healthChecks": {
+    "dashboard": { "status": 200, "url": "https://aicombinator.live" },
+    "workerApi": { "status": 200, "url": "https://api.aicombinator.live/health" },
+    "supervisor": { "status": 200, "url": "http://203.0.113.10:8787/health" }
+  },
+  "unitTests": {
+    "passed": 944,
+    "failed": 0,
+    "total": 944
+  },
+  "assertions": {
+    "VAL-CROSS-001": {
+      "status": "pass",
+      "description": "Full navigation cycle: portfolio → dashboard → team → settings → dashboard → portfolio",
+      "evidence": "All 6 URLs resolve correctly (no 404 or redirect). Each page loads within 5s. Screenshots at each step confirm correct URL."
+    },
+    "VAL-CROSS-002": {
+      "status": "blocked",
+      "description": "Sidebar nav links work on every page",
+      "evidence": "Company pages show 'Not authenticated' fallback — sidebar requires loaded company data. Cannot verify sidebar link functionality without authenticated access to company pages.",
+      "blocker": "Clerk session JWT expired in auth-state.json"
+    },
+    "VAL-CROSS-003": {
+      "status": "pass",
+      "description": "Browser back button navigation",
+      "evidence": "Navigated portfolio → billing → launch, then 2 back presses returned correctly: launch → billing → portfolio. Each press returned to expected URL with content rendered."
+    },
+    "VAL-CROSS-004": {
+      "status": "pass",
+      "description": "Direct URL access for all pages",
+      "evidence": "All 6 URLs load directly: /portfolio, /company/{id}, /company/{id}/team, /company/{id}/settings, /billing, /launch. No 404s or unexpected redirects."
+    },
+    "VAL-CROSS-008": {
+      "status": "pass",
+      "description": "Theme toggle persists across navigation",
+      "evidence": "Toggled to dark → navigated through portfolio, launch, company/*, team, settings — all pages maintained dark class and rgb(18,16,16) background. Toggled back to light — all pages showed rgb(238,238,238). localStorage.theme confirmed matching."
+    },
+    "VAL-CROSS-009": {
+      "status": "pass",
+      "description": "Factory design system applied on all pages",
+      "evidence": "All pages verified: Geist font loaded (document.fonts.check('16px Geist') = true), body background rgb(238,238,238), body color rgb(2,2,2), --brand=#ee6018, --accent-orange=#ee6018. Billing page has 7 orange accent elements, launch page has 7 orange accent elements."
+    },
+    "VAL-CROSS-010": {
+      "status": "pass",
+      "description": "No FOUC on page transitions",
+      "evidence": "Inline <script> in <head> reads localStorage and applies dark class before first paint: try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='dark')d.classList.add('dark')}catch(e){}. Dark preference reloaded without white flash."
+    },
+    "VAL-CROSS-011": {
+      "status": "pass",
+      "description": "Dark mode consistent across all pages and components",
+      "evidence": "All pages in dark mode verified: body bg rgb(18,16,16) warm dark, text rgb(238,238,238), cards rgb(26,23,22) no white backgrounds. --border=#3d3734 warm tone, --brand=#ee6018 unchanged. Screenshots of billing, portfolio, launch, company pages all show proper dark theming."
+    },
+    "VAL-DESIGN-012": {
+      "status": "partial",
+      "description": "Monospace section labels",
+      "evidence": "Launch page section labels ('How much shaping do you want?', 'What Opus will produce before launch', 'Tokens') are uppercase with text-accent-orange but use Geist (sans) not Geist Mono. The .section-label class (with font-mono) exists in CSS but is used on authenticated dashboard pages only. Company dashboard pages are blocked by auth."
+    },
+    "VAL-DESIGN-016": {
+      "status": "pass",
+      "description": "Diagonal stripe hover animation",
+      "evidence": "Billing page 'Upgrade to Pro' and 'Enable' buttons have stripe-hover class. ::after pseudo-element has repeating-linear-gradient(45deg,...), position:absolute, opacity:0 (shows on hover). CSS rule .stripe-hover confirmed in stylesheets."
+    },
+    "VAL-DESIGN-027": {
+      "status": "partial",
+      "description": "Orange dot + section label pattern",
+      "evidence": "Launch page has 4 orange uppercase section labels (text-accent-orange + uppercase). The .section-label class with ::before orange dot exists in CSS but requires authenticated dashboard pages to verify. Launch page uses inline Tailwind classes instead."
+    },
+    "VAL-DESIGN-033": {
+      "status": "blocked",
+      "description": "Badge styling: monospace uppercase",
+      "evidence": "No data-slot='badge' elements found on accessible pages (portfolio, billing, launch). Status badges appear on authenticated company pages only. Cannot verify badge font-mono + uppercase styling."
+    },
+    "VAL-DESIGN-044": {
+      "status": "pass",
+      "description": "Consistent radius tokens",
+      "evidence": "globals.css uses var(--radius-xl), var(--radius-sm), var(--radius-md), var(--radius-lg) for border-radius. Cards compute to 16px (from --radius-xl). Tokens defined: --radius=.75rem, --radius-sm=calc(.75rem-4px), --radius-md=calc(.75rem-2px), --radius-lg=.75rem, --radius-xl=calc(.75rem+4px). No hardcoded values except 9999px (pills) and 50% (circles)."
+    },
+    "VAL-CHAT-001": {
+      "status": "blocked",
+      "description": "Chat panel visible on desktop dashboard",
+      "blocker": "Clerk session JWT expired — company dashboard shows 'Not authenticated' error, chat panel requires loaded company data"
+    },
+    "VAL-CHAT-002": {
+      "status": "blocked",
+      "description": "Mobile chat opens as slide-over",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-003": {
+      "status": "blocked",
+      "description": "Sending message shows optimistic user bubble",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-004": {
+      "status": "blocked",
+      "description": "CEO streaming response",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-005": {
+      "status": "blocked",
+      "description": "Chat history loads on mount",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-006": {
+      "status": "blocked",
+      "description": "Failed message shows Failed label",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-007": {
+      "status": "blocked",
+      "description": "CEO reply timeout (>90s)",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-008": {
+      "status": "blocked",
+      "description": "Auto-scroll behavior",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-CHAT-010": {
+      "status": "blocked",
+      "description": "Mobile chat backdrop closes slide-over",
+      "blocker": "Clerk session JWT expired — company dashboard not accessible"
+    },
+    "VAL-MOBILE-001": {
+      "status": "pass",
+      "description": "Dashboard full-width on mobile",
+      "evidence": "At 768px viewport, no <aside> element found (sidebar hidden). Content fills viewport width. Portfolio page full-width confirmed. Company error fallback also renders full-width."
+    },
+    "VAL-MOBILE-002": {
+      "status": "blocked",
+      "description": "CEO chat button on sub-desktop (<1280px)",
+      "blocker": "Company page shows 'Not authenticated' — chat button requires loaded company data"
+    },
+    "VAL-MOBILE-003": {
+      "status": "blocked",
+      "description": "Mobile chat slide-over closes on backdrop",
+      "blocker": "Company page shows 'Not authenticated' — chat requires loaded company data"
+    }
+  },
+  "summary": {
+    "total": 25,
+    "passed": 12,
+    "partial": 2,
+    "blocked": 11,
+    "failed": 0,
+    "passRate": "48%",
+    "blockerDetails": "11 assertions blocked by expired Clerk session JWT in auth-state.json. All blocked assertions require authenticated access to company dashboard pages (sidebar, chat panel, badges). The auth state file has valid cookie expiry dates (2027) but the JWT tokens inside the __session cookie have been rotated/expired by Clerk."
+  },
+  "preExistingIssues": [
+    {
+      "description": "__name is not defined console errors on all pages (Clerk SDK + Cloudflare Workers deployment issue)",
+      "severity": "non_blocking"
+    }
+  ]
+}

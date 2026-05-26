@@ -1,0 +1,36 @@
+node_modules/
+dist/
+.next/
+.open-next/
+.vercel/
+coverage/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.env
+.env.*
+!.env.example
+!.env.*.example
+.dev.vars
+!.dev.vars.example
+.DS_Store
+*.tgz
+.automaton/wallet.json
+.automaton/state.db
+.factory/auth-state*.json
+
+# Generated validation and browser test output. Some of these files can contain
+# screenshots, traces, local paths, cookies, or production-like state.
+playwright-report/
+test-results/
+.factory/test-results/
+.factory/validation/
+.tmp/
+tmp-*
+
+# Local Cloudflare and build state.
+.wrangler/
+worker/.wrangler/
+dashboard/.wrangler/
+supervisor/dist/

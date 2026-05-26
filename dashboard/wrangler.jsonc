@@ -1,0 +1,21 @@
+{
+  "name": "aicombinator",
+  "main": "worker.ts",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "API_SERVICE",
+      "service": "agentmarket-api"
+    }
+  ],
+  "compatibility_date": "2024-12-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "example.com/*", "zone_name": "example.com" },
+    { "pattern": "www.example.com/*", "zone_name": "example.com" }
+  ]
+}

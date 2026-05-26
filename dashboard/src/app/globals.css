@@ -1,0 +1,793 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@xyflow/react/dist/style.css";
+
+/* Instrument Serif font-face removed — using Geist throughout */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-source-serif);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-green: var(--accent-green);
+  --color-accent-red: var(--accent-red);
+  --color-accent-amber: var(--accent-amber);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-50% - 8px));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear
+;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);}}
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);}
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);}
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);}
+  100% {
+    transform: translateZ(0) rotate(360deg);}}}
+
+/* ─── Light Theme with Factory Orange Accent ─── */
+:root {
+  --radius: 0;
+  /* Font variables are injected by next/font via body className.
+     Fallbacks only used if next/font classes are absent. */
+  --font-geist-sans: "Geist", "Helvetica Neue", "Arial", sans-serif;
+  --font-geist-mono: "Geist Mono", "SFMono-Regular", "Menlo", "Consolas", monospace;
+  --background: #eeeeee;
+  --foreground: #020202;
+  --card: #f5f5f5;
+  --card-foreground: #020202;
+  --popover: #f5f5f5;
+  --popover-foreground: #020202;
+  --primary: #020202;
+  --primary-foreground: #eeeeee;
+  --secondary: #e5e2e0;
+  --secondary-foreground: #020202;
+  --muted: #e5e2e0;
+  --muted-foreground: #6b6462;
+  --accent: #e5e2e0;
+  --accent-foreground: #020202;
+  --destructive: #EF4444;
+  --border: #b8b3b0;
+  --input: #b8b3b0;
+  --ring: #ee6018;
+  --chart-1: #ee6018;
+  --chart-2: #c4500f;
+  --chart-3: #F59E0B;
+  --chart-4: #6b6462;
+  --chart-5: #b8b3b0;
+  --sidebar: #e5e2e0;
+  --sidebar-foreground: #020202;
+  --sidebar-primary: #ee6018;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #f5ece6;
+  --sidebar-accent-foreground: #020202;
+  --sidebar-border: #b8b3b0;
+  --sidebar-ring: #ee6018;
+
+  /* Brand — Factory Orange */
+  --brand: #ee6018;
+  --brand-hover: #c4500f;
+  --accent-orange: #ee6018;
+  --accent-green: #28C840;
+  --accent-red: #EF4444;
+  --accent-amber: #F59E0B;
+}
+
+/* ─── Dark Theme (inverted warm scheme) ─── */
+.dark {
+  --background: #121010;
+  --foreground: #eeeeee;
+  --card: #1a1716;
+  --card-foreground: #eeeeee;
+  --popover: #1a1716;
+  --popover-foreground: #eeeeee;
+  --primary: #eeeeee;
+  --primary-foreground: #121010;
+  --secondary: #2a2524;
+  --secondary-foreground: #eeeeee;
+  --muted: #2a2524;
+  --muted-foreground: #9e9895;
+  --accent: #2a2524;
+  --accent-foreground: #eeeeee;
+  --destructive: #EF4444;
+  --border: #3d3734;
+  --input: #3d3734;
+  --ring: #ee6018;
+  --chart-1: #ee6018;
+  --chart-2: #FB923C;
+  --chart-3: #F59E0B;
+  --chart-4: #6b6462;
+  --chart-5: #3d3734;
+  --sidebar: #121010;
+  --sidebar-foreground: #eeeeee;
+  --sidebar-primary: #ee6018;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #2a2524;
+  --sidebar-accent-foreground: #eeeeee;
+  --sidebar-border: #3d3734;
+  --sidebar-ring: #ee6018;
+
+  --brand: #ee6018;
+  --brand-hover: #FB923C;
+  --accent-orange: #ee6018;
+  --accent-green: #34D058;
+  --accent-red: #F87171;
+  --accent-amber: #FBBF24;
+}
+
+/* ─── Base ─── */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ─── Dot grid pattern ─── */
+
+.dot-grid {
+  background-image: radial-gradient(circle, #D4D4D4 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark .dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+}
+
+.dot-grid-dark {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── Section dark (alternating black sections) ─── */
+
+.section-dark {
+  background: #121010;
+  color: #eeeeee;
+}
+
+.section-dark .text-muted-foreground {
+  color: #9e9895;
+}
+
+/* ─── Card (clean, minimal) ─── */
+
+.card-clean {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.card-clean:hover {
+  border-color: var(--brand);
+}
+
+/* Dark variant */
+.dark .card-clean,
+.section-dark .card-clean {
+  background: var(--card);
+  border-color: var(--border);
+}
+
+.dark .card-clean:hover,
+.section-dark .card-clean:hover {
+  border-color: var(--brand);
+}
+
+/* ─── Inline Markdown Rendering ─── */
+
+.markdown-rendered h1 { font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem; line-height: 1.3; }
+.markdown-rendered h2 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.4rem; line-height: 1.3; }
+.markdown-rendered h3 { font-size: 0.95rem; font-weight: 600; margin: 0.75rem 0 0.3rem; line-height: 1.3; }
+.markdown-rendered p { margin: 0 0 0.5rem; }
+.markdown-rendered ul,
+.markdown-rendered ol { margin: 0 0 0.5rem 1.25rem; padding: 0; }
+.markdown-rendered li { margin-top: 0.15rem; }
+.markdown-rendered li + li { margin-top: 0.25rem; }
+.markdown-rendered strong { font-weight: 600; }
+.markdown-rendered code {
+  background: var(--secondary, #f4f4f5);
+  border-radius: 0;
+  padding: 0.1em 0.35em;
+  font-family: "SFMono-Regular", "Menlo", monospace;
+  font-size: 0.88em;
+}
+.markdown-rendered pre {
+  margin: 0.5rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0;
+  background: var(--secondary, #f4f4f5);
+  overflow-x: auto;
+  font-family: "SFMono-Regular", "Menlo", monospace;
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+.markdown-rendered pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+.markdown-rendered hr {
+  border: 0;
+  border-top: 1px solid var(--border, #e5e5e5);
+  margin: 0.75rem 0;
+}
+.markdown-rendered .md-table-wrap {
+  margin: 0.5rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 0;
+}
+.markdown-rendered table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+.markdown-rendered th,
+.markdown-rendered td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--border, #e5e5e5); text-align: left; }
+.markdown-rendered th { font-weight: 600; font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted-foreground); }
+.markdown-rendered tbody tr:last-child td { border-bottom: 0; }
+
+/* Chat-specific markdown — clear hierarchy for inline chat bubbles */
+.chat-markdown.markdown-rendered h1 { font-size: 1.15em; font-weight: 700; margin: 0.75rem 0 0.35rem; color: var(--foreground); }
+.chat-markdown.markdown-rendered h2 { font-size: 1.05em; font-weight: 700; margin: 0.6rem 0 0.3rem; color: var(--foreground); }
+.chat-markdown.markdown-rendered h3 { font-size: 1em; font-weight: 600; margin: 0.5rem 0 0.25rem; color: var(--foreground); }
+.chat-markdown.markdown-rendered p { margin: 0 0 0.5rem; line-height: 1.7; }
+.chat-markdown.markdown-rendered p:last-child { margin-bottom: 0; }
+.chat-markdown.markdown-rendered ul,
+.chat-markdown.markdown-rendered ol { margin: 0.35rem 0 0.5rem 1.25rem; }
+.chat-markdown.markdown-rendered li { margin-bottom: 0.2rem; line-height: 1.65; }
+.chat-markdown.markdown-rendered pre { margin: 0.5rem 0; padding: 0.75rem 1rem; font-size: 0.82em; background: var(--secondary); border: 1px solid var(--border); }
+.chat-markdown.markdown-rendered code { font-size: 0.88em; padding: 0.15rem 0.35rem; background: var(--secondary); border: 1px solid var(--border); }
+
+/* ─── Primary Button (dark fill + stripe hover) ─── */
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 600;
+  border-radius: 0;
+  transition: background 0.15s ease, transform 0.1s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px, transparent 2px,
+    rgb(164, 157, 154) 2px, rgb(164, 157, 154) 3px,
+    transparent 3px, transparent 5px
+  );
+  background-size: 7.07px 7.07px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+  animation: slideStripePattern 2000ms linear infinite;
+}
+
+.dark .btn-primary::after {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px, transparent 2px,
+    rgb(77, 73, 71) 2px, rgb(77, 73, 71) 3px,
+    transparent 3px, transparent 5px
+  );
+  background-size: 7.07px 7.07px;
+}
+
+.btn-primary:hover {
+  background: var(--primary);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+/* ─── Ghost / secondary button ─── */
+
+.btn-ghost {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-weight: 500;
+  border-radius: 0;
+  transition: all 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--secondary);
+  border-color: var(--brand);
+  color: var(--foreground);
+}
+
+.dark .btn-ghost {
+  background: var(--card);
+  border-color: var(--border);
+  color: var(--muted-foreground);
+}
+
+.dark .btn-ghost:hover {
+  background: var(--secondary);
+  border-color: var(--brand);
+  color: var(--foreground);
+}
+
+/* ─── Pill badge ─── */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  background: rgba(238, 96, 24, 0.08);
+  color: #ee6018;
+  border: 1px solid rgba(238, 96, 24, 0.3);
+  transition: all 0.15s ease;
+}
+
+.pill:hover {
+  background: rgba(238, 96, 24, 0.15);
+}
+
+.dark .pill {
+  background: rgba(238, 96, 24, 0.1);
+  color: #FB923C;
+  border-color: rgba(238, 96, 24, 0.25);
+}
+
+.dark .pill:hover {
+  background: rgba(238, 96, 24, 0.18);
+}
+
+/* ─── Shimmer (loading skeleton) ─── */
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #F5F5F5 25%,
+    #EBEBEB 50%,
+    #F5F5F5 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* dark shimmer */
+.dark .shimmer,
+.section-dark .shimmer {
+  background: linear-gradient(90deg, #2a2524 25%, #3d3734 50%, #2a2524 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ─── Progress bar (orange) ─── */
+
+.progress-bar {
+  background: linear-gradient(90deg, #ee6018, #FB923C);
+  transition: width 0.7s ease-out;
+}
+
+/* ─── Streaming text cursor ─── */
+
+.streaming-cursor {
+  animation: blink-cursor 0.6s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ─── Launch-ready button glow ─── */
+
+.launch-ready-btn {
+  box-shadow: 0 0 12px rgba(255, 102, 0, 0.3), 0 0 4px rgba(255, 102, 0, 0.2);
+  animation: launch-glow 2s ease-in-out infinite;
+}
+
+@keyframes launch-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 102, 0, 0.3), 0 0 4px rgba(255, 102, 0, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(255, 102, 0, 0.5), 0 0 8px rgba(255, 102, 0, 0.3); }
+}
+
+/* ─── Fade-in animation (optimized — GPU only) ─── */
+
+.fade-in-up {
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity, transform;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.stagger-1 { animation-delay: 0.04s; }
+.stagger-2 { animation-delay: 0.08s; }
+.stagger-3 { animation-delay: 0.12s; }
+.stagger-4 { animation-delay: 0.16s; }
+.stagger-5 { animation-delay: 0.2s; }
+.stagger-6 { animation-delay: 0.24s; }
+
+/* ─── Slide in from right ─── */
+
+.slide-in-right {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity, transform;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(8px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ─── Section number marker ─── */
+
+.section-number {
+  font-family: var(--font-geist-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #ee6018;
+}
+
+/* ─── Glow for orange success (removed — flat design, no shadows) ─── */
+
+.glow-orange {
+  /* shadows removed for flat design */
+}
+
+/* ─── Grid divider ─── */
+
+.grid-divider {
+  height: 48px;
+  background-image: radial-gradient(circle, #D4D4D4 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.5;
+}
+
+.dark .grid-divider {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+}
+
+/* ─── Smooth selection ─── */
+
+::selection {
+  background: rgba(238, 96, 24, 0.15);
+  color: #020202;
+}
+
+.dark ::selection {
+  background: rgba(238, 96, 24, 0.3);
+  color: #eeeeee;
+}
+
+/* ─── Hover lift ─── */
+
+.hover-lift {
+  transition: transform 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* ─── Scrollbar hide ─── */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Feature grid (border-based grid) ─── */
+
+.feature-grid {
+  display: grid;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.feature-grid > div {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+.feature-grid > div:last-child {
+  border-right: 0;
+}
+
+.dark .feature-grid {
+  border-color: var(--border);
+}
+
+.dark .feature-grid > div {
+  border-color: var(--border);
+}
+
+/* ─── Landing page font scoping ─── */
+/* Override --font-sans to Outfit on the landing page so Tailwind font-sans resolves to Outfit,
+   while the app interior continues to use Geist via the default --font-sans variable. */
+.landing-page-scope {
+  --font-sans: var(--font-outfit);
+  --font-serif: var(--font-source-serif);
+}
+
+/* ─── Heading utility (Instrument Serif for landing page headings) ─── */
+
+.heading-serif {
+  font-family: var(--font-instrument-serif);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ─── Gradient border for payment ─── */
+
+.gradient-border {
+  position: relative;
+  border: 2px solid #ee6018;
+  border-radius: 0;
+  background: var(--card);
+}
+
+.dark .gradient-border {
+  background: var(--card);
+}
+
+/* ─── Orange gradient text ─── */
+
+.text-gradient-orange {
+  background: linear-gradient(135deg, #ee6018 0%, #c4500f 50%, #C2410C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Floating animation ─── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 5s ease-in-out 1s infinite;
+}
+
+/* ─── Pulse glow ─── */
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.animate-pulse-glow {
+  /* shadows removed for flat design — gentle opacity pulse instead */
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* ─── Orange underline accent ─── */
+
+.orange-underline {
+  text-decoration: none;
+  background-image: linear-gradient(#ee6018, #ee6018);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  background-position: left bottom;
+}
+
+/* ─── Section label: orange dot + UPPERCASE monospace ─── */
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-geist-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.section-label::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background-color: #ee6018;
+  flex-shrink: 0;
+}
+
+/* ─── Diagonal stripe hover animation (Factory.ai design) ─── */
+
+@keyframes slideStripePattern {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 14.14px 14.14px;
+  }
+}
+
+.stripe-hover {
+  position: relative;
+}
+
+.stripe-hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px, transparent 2px,
+    rgb(164, 157, 154) 2px, rgb(164, 157, 154) 3px,
+    transparent 3px, transparent 5px
+  );
+  background-size: 7.07px 7.07px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.stripe-hover:hover::after {
+  opacity: 1;
+  animation: slideStripePattern 2000ms linear infinite;
+}
+
+/* Dark mode stripe color */
+.dark .stripe-hover::after {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0px, transparent 2px,
+    rgb(77, 73, 71) 2px, rgb(77, 73, 71) 3px,
+    transparent 3px, transparent 5px
+  );
+  background-size: 7.07px 7.07px;
+}
+
+/* Ghost/link/icon buttons should not have stripe hover */
+[data-variant="ghost"].stripe-hover::after,
+[data-variant="link"].stripe-hover::after,
+[data-size="icon"].stripe-hover::after,
+[data-size="icon-xs"].stripe-hover::after,
+[data-size="icon-sm"].stripe-hover::after,
+[data-size="icon-lg"].stripe-hover::after {
+  display: none;
+}
+
+/* ─── Sections: content-visibility removed — was breaking sticky header z-stacking ─── */
+
+/* ─── Disable heavy animations for reduced-motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up,
+  .slide-in-right,
+  .animate-float,
+  .animate-float-slow,
+  .animate-float-delayed,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  .stripe-hover:hover::after {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .btn-primary:hover::after {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}

@@ -1,0 +1,36 @@
+commands:
+  init: cd /Users/CEF/Projects/automaton && bash .factory/init.sh
+  install: cd /Users/CEF/Projects/automaton && npm install && cd dashboard && npm install && cd ../worker && npm install && cd ../supervisor && npm install
+  test: cd /Users/CEF/Projects/automaton && npx vitest run
+  typecheck: cd /Users/CEF/Projects/automaton/supervisor && npx tsc --noEmit
+  typecheck-worker: cd /Users/CEF/Projects/automaton/worker && npx tsc --noEmit
+  build: cd /Users/CEF/Projects/automaton/dashboard && npm run build
+  lint: cd /Users/CEF/Projects/automaton/dashboard && npm run lint
+  deploy-dashboard: cd /Users/CEF/Projects/automaton/dashboard && npm run deploy
+  deploy-worker: cd /Users/CEF/Projects/automaton/worker && npm run deploy
+  deploy-supervisor: cd /Users/CEF/Projects/automaton && ./deploy/deploy.sh
+  deploy-supervisor-vm: cd /Users/CEF/Projects/automaton && VM_HOST=203.0.113.10 ./deploy/deploy.sh
+  db-migrate: cd /Users/CEF/Projects/automaton/worker && npm run db:migrate
+  db-migrate-remote: cd /Users/CEF/Projects/automaton/worker && npx wrangler d1 execute agentmarket --remote --file=schema.sql
+
+services:
+  worker-api:
+    start: echo "Worker API is deployed to Cloudflare Workers (no local process)"
+    stop: echo "No local process to stop"
+    healthcheck: curl -sf https://api.example.com/health
+    port: 443
+    depends_on: []
+
+  dashboard:
+    start: echo "Dashboard is deployed to Cloudflare Workers (no local process)"
+    stop: echo "No local process to stop"
+    healthcheck: curl -sf https://example.com
+    port: 443
+    depends_on: []
+
+  supervisor:
+    start: echo "Supervisor runs on VM 203.0.113.10:8787 (systemd service)"
+    stop: echo "Supervisor managed via systemd on VM"
+    healthcheck: curl -sf http://203.0.113.10:8787/health
+    port: 8787
+    depends_on: []

@@ -1,0 +1,40 @@
+# Cloudflare Tunnel configuration for AI Combinator supervisor.
+#
+# This routes traffic from the Cloudflare Worker to the supervisor
+# running on the VM, without exposing any ports to the public internet.
+#
+# Setup:
+#   1. cloudflared tunnel login
+#   2. cloudflared tunnel create aicombinator
+#   3. Copy the tunnel UUID from the output
+#   4. Update "tunnel:" below with your UUID
+#   5. Add DNS record: cloudflared tunnel route dns aicombinator supervisor.aicombinator.live
+#   6. cp this file to /etc/cloudflared/config.yml
+#   7. cloudflared service install
+#   8. systemctl enable --now cloudflared
+#
+# The Worker's SUPERVISOR_URL should be set to:
+#   https://supervisor.aicombinator.live
+
+tunnel: REPLACE_WITH_TUNNEL_UUID
+credentials-file: /home/aicombinator/.cloudflared/REPLACE_WITH_TUNNEL_UUID.json
+
+ingress:
+  # Supervisor API — Worker calls this
+  - hostname: supervisor.aicombinator.live
+    service: http://localhost:8787
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      keepAliveTimeout: 90s
+
+  # Company hosting — nginx reverse proxy routes subdomains to containers
+  # Each company gets {slug}.aicombinator.live → aic-{companyId}:3000
+  - hostname: "*.aicombinator.live"
+    service: http://localhost:80
+    originRequest:
+      connectTimeout: 10s
+      keepAliveTimeout: 30s
+
+  # Catch-all — required by cloudflared
+  - service: http_status:404

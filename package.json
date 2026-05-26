@@ -1,0 +1,29 @@
+{
+  "name": "@conway/automaton",
+  "version": "0.1.0",
+  "description": "AI Combinator - Autonomous AI Company Platform",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Conway-Research/automaton.git"
+  },
+  "homepage": "https://aicombinator.live",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run",
+    "test:api": "vitest run --config tests/vitest.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^2.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
