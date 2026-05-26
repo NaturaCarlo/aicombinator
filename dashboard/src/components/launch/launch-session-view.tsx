@@ -139,6 +139,41 @@ function LaunchBlueprintPanel({ session, displayName }: { session: LaunchSession
   );
 }
 
+function GeneratingOptionsCard({ elapsedSeconds }: { elapsedSeconds: number }) {
+  return (
+    <div className="space-y-3 rounded-none border border-accent-orange/25 bg-gradient-to-br from-accent-orange/[0.10] via-background to-secondary/20 px-5 py-4 shadow-sm">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-none border border-accent-orange/25 bg-accent-orange/10 text-accent-orange">
+          <Sparkles className="h-4 w-4 animate-pulse" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <p className="text-sm font-semibold text-foreground">Generating your next choices</p>
+            {elapsedSeconds > 0 && (
+              <span className="text-[11px] font-medium text-muted-foreground">{elapsedSeconds}s</span>
+            )}
+          </div>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
+            The CEO is preparing reply options. Wait for the buttons below before continuing.
+          </p>
+        </div>
+      </div>
+      <div className="grid gap-2 sm:grid-cols-3">
+        {[0, 1, 2].map((index) => (
+          <div
+            key={index}
+            className="min-h-[64px] rounded-none border border-border/70 bg-background/70 px-4 py-3"
+          >
+            <div className="h-3 w-3/4 animate-pulse rounded-none bg-accent-orange/20" />
+            <div className="mt-2 h-2.5 w-full animate-pulse rounded-none bg-secondary" />
+            <div className="mt-1.5 h-2.5 w-2/3 animate-pulse rounded-none bg-secondary" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 type LaunchSessionViewProps = {
   session: LaunchSession;
   creditsKnown: boolean;
@@ -196,6 +231,7 @@ export function LaunchSessionView({
   const optionClickGuardTime = useRef(0);
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const processingStartRef = useRef<number | null>(null);
+  const generatingOptions = processing && !streamingContent;
 
   // Track elapsed time while processing
   useEffect(() => {
@@ -293,7 +329,7 @@ export function LaunchSessionView({
                 {streamingContent
                   ? "CEO is streaming"
                   : processing
-                    ? `CEO is thinking${elapsedSeconds > 0 ? `... ${elapsedSeconds}s` : "..."}`
+                    ? `Generating options${elapsedSeconds > 0 ? `... ${elapsedSeconds}s` : "..."}`
                     : "Thinking..."}
               </span>
             </span>
@@ -469,11 +505,8 @@ export function LaunchSessionView({
                 </div>
               ))}
 
-              {processing && !streamingContent && (
-                <div className="flex items-center gap-2 py-4 text-sm text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin text-accent-orange" />
-                  CEO is thinking{elapsedSeconds > 0 ? `... ${elapsedSeconds}s` : "..."}
-                </div>
+              {generatingOptions && (
+                <GeneratingOptionsCard elapsedSeconds={elapsedSeconds} />
               )}
 
               {streamingContent && (
@@ -534,13 +567,14 @@ export function LaunchSessionView({
               value={chatInput}
               onChange={(event) => setChatInput(event.target.value)}
               onKeyDown={handleKeyDown}
+              disabled={processing}
               rows={1}
               placeholder={
                 processing
-                  ? ""
+                  ? "Waiting for CEO options..."
                   : (session.readiness.nextBestQuestion || "Shape the company with the CEO...")
               }
-              className="min-h-[24px] max-h-[120px] flex-1 resize-none bg-transparent text-sm leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+              className="min-h-[24px] max-h-[120px] flex-1 resize-none bg-transparent text-sm leading-6 text-foreground placeholder:text-muted-foreground/60 focus:outline-none disabled:cursor-wait disabled:text-muted-foreground"
               style={{ height: "auto", overflow: "hidden" }}
               onInput={(event) => {
                 const target = event.target as HTMLTextAreaElement;
@@ -559,7 +593,7 @@ export function LaunchSessionView({
           </div>
           <div className="mt-2 flex items-center justify-between gap-3">
             <p className="text-[11px] text-muted-foreground/60">
-              Enter to send, Shift+Enter for new line
+              {processing ? "The CEO is generating selectable options. You can continue when they appear." : "Enter to send, Shift+Enter for new line"}
             </p>
             <div className="flex items-center gap-2">
               {creditBalance !== undefined && (
